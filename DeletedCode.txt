@@ -1,0 +1,18 @@
+def iterOpOnSequences(start1,start2,next1,next2,Op,end):
+    stop = 0
+    count = 0
+    while not stop:
+        if(id(start1) == end):
+            stop = 1
+        start1 = Op(start1,start2,count)
+        if not stop:
+            start1 = next1(start1,count)
+            start2 = next2(start2,count)
+            count += 1
+    x = [3,5,1]
+    y = [-2,-1,9]
+
+    sub = lambda a,b: a-b
+    next1 = lambda a,b,c: x[c]
+    next2 = lambda a,b,c: y[c]
+    Op = lambda a,b,c:  
