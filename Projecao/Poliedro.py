@@ -21,6 +21,7 @@ class Poliedro:
         self.b.append(sum)
 
     def __str__(self):
+
         string = ""
         for i in range(self.qtdRestrictions):
             string += "|"
@@ -34,4 +35,5 @@ class Poliedro:
             else:
                 string += "   "
             string += "|"+str(currentR[1]) +"|\n"
+
         return string
