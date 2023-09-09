@@ -7,7 +7,7 @@ Algoritmo para criar projeções de poliedros. Código 100% em python, usando ap
 #### Projeção
 A projeção de um poliedro P numa direção 'c' é chamada com a seguinte linha de código:
 
-python3 Projecao/Projection.py projecao.in
+python3 Codigo/Projection.py projecao.in
 
 Sendo projecao.in o nome de um arquivo que contém em sua primeira linha a direção 'c' e nas linhas seguintes o poliedro P (escrito através de suas restrições linha por linha). Um exemplo deste tipo de arquivo está presente no repositório ("projecao.in").
 
@@ -16,7 +16,7 @@ A saída é feita na saída stdout, mostrando o poliedro tal que sua intersecç�
 #### Checar se é vazio
 A checagem de presença de algum elemento em um poliedro P é chamada da seguinte forma:
 
-python3 Projecao/IsItEmpty.py ehVazio.in
+python3 Codigo/IsItEmpty.py ehVazio.in
 
 Sendo ehVazio.in o nome do arquivo que contém P (escrito através de suas restrições linha por linha). Um exemplo deste tipo de arquivo está presente no repositório ("ehVazio.in") 
 
