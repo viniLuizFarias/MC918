@@ -1,5 +1,6 @@
 from BasicOp import *
 from Poliedro import Poliedro,Matriz
+import sys
 import re
 
 
@@ -48,17 +49,17 @@ def appendRestriction(P,restrictionString):
     P.addRestriction(a,b)
 
 if __name__ == "__main__":
+    fileName = sys.argv[1]
 
+    P = Poliedro()
+    file = open(fileName)
 
-    rS1 = "-1x1 + 0x2 <= -1"
-    rS2 = "-1x1 + -1x2 <= -5"
-    rS3 = "2x1 + 1x2 <= 8"
+    c = file.readline()
+    c = re.findall(r',?(-?[0-9]+)',c)
+    c = [int(a) for a in c]
 
-    P = Poliedro(2)
+    for line in file:
+        appendRestriction(P,line)
 
-    appendRestriction(P,rS1)
-    appendRestriction(P,rS2)
-    appendRestriction(P,rS3)
-
-    Pr = getProjection(P,[1,1])
-    print(Pr.A,Pr.b)
+    Pr = getProjection(P,c)
+    print(Pr)
