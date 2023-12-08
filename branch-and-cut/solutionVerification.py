@@ -32,7 +32,7 @@ def findViolationEdge(ghTree):
 
 def minimumFlowCut(graph,s,t):
     partitions = nx.minimum_cut(graph,s,t)[1]
-    cut = partitionBoundary(graph,partitions[0])
+    cut = vSetBoundary(graph,partitions[0])
     return cut
 
 
@@ -63,7 +63,7 @@ def getMinCutST(ghTree,violationEdge):
 
 
 def findSteinerViolation(graph,solution):
-    embedSolution(graph,solution)
+    embedSolution(graph,solution,1)
 
     ghTree = nx.gomory_hu_tree(graph)
     ghTree._sSet = graph._sSet

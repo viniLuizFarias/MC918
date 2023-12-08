@@ -29,16 +29,19 @@ def printEdgeSet(graph,set):
         print(graph.edges[edge]["capacity"], end = " ")
     print()
 
-def embedSolution(graph,solution):
+def embedSolution(graph,solution,makeInt = 0):
     for i,j in solution:
-        graph.edges[i,j]["capacity"] = round(solution[i,j])
+        val = solution[i,j]
+        if makeInt:
+            round(val)
+        graph.edges[i,j]["capacity"] = val
 
-def partitionBoundary(graph,partition):
+def vSetBoundary(graph,vSet):
     boundary = set()
 
-    for node in partition:
+    for node in vSet:
         for edge in graph.edges(node):
-            if list(edge)[1] not in partition:
+            if list(edge)[1] not in vSet:
                 boundary.add(edge)
 
     return boundary

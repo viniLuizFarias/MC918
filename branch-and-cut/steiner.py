@@ -42,10 +42,10 @@ def stpToGraph(stpFile):
         sSet.add(int(line[1]))
 
     graph._sSet = sSet
-    
+
     partition = [set(graph.nodes-graph._sSet)]
     partition += [set([node]) for node in graph._sSet]
-    graph.auxPartition = partition
+    graph._auxPartition = partition
 
     return graph
 
