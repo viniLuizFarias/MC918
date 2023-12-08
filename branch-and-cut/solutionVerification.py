@@ -29,6 +29,26 @@ def findViolationEdge(ghTree):
             return edge
     return None
 
+def partitionBoundary(graph,partition):
+    boundary = set()
+
+    for node in partition:
+        for edge in graph.edges(node):
+            if list(edge)[1] not in partition:
+                boundary.add(edge)
+
+    return boundary
+
+def minimumFlowCut(graph,s,t):
+    partitions = nx.minimum_cut(graph,s,t)[1]
+    cut = partitionBoundary(graph,partitions[0])
+    return cut
+
+
+    
+
+
+
 def findSNode(tree,node):
     while(node not in tree._sSet):
         currentEdge = list(tree.edges(node))[0]
@@ -42,7 +62,7 @@ def getMinCutST(ghTree,violationEdge):
     s = violationEdge[0]
     t = violationEdge[1]
     
-    print(s,t)
+    #print(s,t)
 
     ghTree.remove_edge(*violationEdge)
     #drawGraph(ghTree)
@@ -55,11 +75,8 @@ def getMinCutST(ghTree,violationEdge):
 
 def findSteinerViolation(graph,solution):
     for i,j in solution:
-        if solution[i,j] > 0:
-            graph.edges[i,j]["capacity"] = solution[i,j]
-        else:
-            graph.edges[i,j]["capacity"] = 0
-        #print(i,j,graph.edges[i,j]["capacity"])
+        graph.edges[i,j]["capacity"] = round(solution[i,j])
+
     ghTree = nx.gomory_hu_tree(graph)
     ghTree._sSet = graph._sSet
     eliminateNSLeafs(ghTree)
@@ -70,6 +87,6 @@ def findSteinerViolation(graph,solution):
         return None
 
     s,t = getMinCutST(ghTree,violationEdge)    
-    print(s,t)
+    #print(s,t)
 
-    return nx.minimum_edge_cut(graph,s,t)
+    return minimumFlowCut(graph,s,t)

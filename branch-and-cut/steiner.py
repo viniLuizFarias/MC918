@@ -48,7 +48,7 @@ def createModel(graph):
     model._graph = graph
     model.Params.LazyConstraints = 1
     model.Params.TimeLimit = 600
-    model.Params.OutputFlag = 0
+    #model.Params.OutputFlag = 0
 
     return model
 
@@ -77,20 +77,20 @@ def callbackLabel(model,where):
     if where == GRB.Callback.MIPSOL:
         vals = model.cbGetSolution(model._vars)
         cut = findSteinerViolation(model._graph,vals)
-        print(graph.edges[list(cut)[0]]["capacity"])
-        print(graph.edges[21,22]["capacity"])
-        print(cut)
-        #drawGraph(model._graph)
+        #printEdgeSet(graph,cut)
+
 
         if cut != None:
             lazyR = gp.quicksum(model._vars[i,j] for i, j in cut) >= 1
             model.cbLazy(lazyR)
+        else:
+            print("A")
 
 
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print('Usage: steiner.py stpFilePath')
+        #print('Usage: steiner.py stpFilePath')
         sys.exit(1)
     filePath = sys.argv[1]
     file = open(filePath,"r")
@@ -103,5 +103,4 @@ if __name__ == "__main__":
     model.optimize(callbackLabel)
 
     vals = model.getAttr('X', model._vars)
-    cut = findSteinerViolation(model._graph,vals)
-    print(graph.edges[cut.pop()]["capacity"])
+
