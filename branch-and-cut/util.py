@@ -29,6 +29,28 @@ def printEdgeSet(graph,set):
         print(graph.edges[edge]["capacity"], end = " ")
     print()
 
+def embedSolution(graph,solution):
+    for i,j in solution:
+        graph.edges[i,j]["capacity"] = round(solution[i,j])
+
+def partitionBoundary(graph,partition):
+    boundary = set()
+
+    for node in partition:
+        for edge in graph.edges(node):
+            if list(edge)[1] not in partition:
+                boundary.add(edge)
+
+    return boundary
+
+identity = lambda a: a 
+
+def summation(iterableObj,f = identity):
+    sum = 0
+    for element in iterableObj:
+        sum += f(element)
+    return sum
+
 """        sum = 0
         for x in vals.values():
             sum += x

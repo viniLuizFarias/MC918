@@ -7,6 +7,8 @@ import gurobipy as gp
 from gurobipy import GRB
 
 from solutionVerification import *
+from relaxationCuts import *
+
 from util import *
 
 
@@ -40,6 +42,11 @@ def stpToGraph(stpFile):
         sSet.add(int(line[1]))
 
     graph._sSet = sSet
+    
+    partition = [set(graph.nodes-graph._sSet)]
+    partition += [set([node]) for node in graph._sSet]
+    graph.auxPartition = partition
+
     return graph
 
 
@@ -48,7 +55,7 @@ def createModel(graph):
     model._graph = graph
     model.Params.LazyConstraints = 1
     model.Params.TimeLimit = 600
-    #model.Params.OutputFlag = 0
+    model.Params.OutputFlag = 0
 
     return model
 
@@ -83,14 +90,16 @@ def callbackLabel(model,where):
         if cut != None:
             lazyR = gp.quicksum(model._vars[i,j] for i, j in cut) >= 1
             model.cbLazy(lazyR)
-        else:
-            print("A")
+
+    elif where == GRB.Callback.MIPNODE:
+        if model.cbGet(GRB.Callback.MIPNODE_STATUS) == GRB.OPTIMAL:
+            partition = userCutPartition(model)
 
 
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        #print('Usage: steiner.py stpFilePath')
+        print('Usage: steiner.py stpFilePath')
         sys.exit(1)
     filePath = sys.argv[1]
     file = open(filePath,"r")
