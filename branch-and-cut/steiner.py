@@ -26,11 +26,17 @@ def stpToGraph(stpFile):
     n = int(stpFile.readline().split()[1])
     m = int(stpFile.readline().split()[1])
     graph.add_nodes_from(range(1,n+1))
+    sortedEdges = set()
 
     for i in range(m):
         line = stpFile.readline().split()
-        graph.add_edge(int(line[1]),int(line[2]),value = int(line[3]))
+        edge = [int(line[1]),int(line[2])]
+        graph.add_edge(*edge,value = int(line[3]))
+        if edge[1] < edge[0]:
+            edge = [edge[1],edge[0]]
+        sortedEdges.add(tuple(edge))
 
+    graph._sortedEdges = sortedEdges
     nx.set_node_attributes(graph,0,"steiner")
 
     iterFile(stpFile,"SECTION Terminals\n")
@@ -46,6 +52,7 @@ def stpToGraph(stpFile):
 
     partition = [set(graph.nodes-graph._sSet)]
     partition += [set([node]) for node in graph._sSet]
+
     graph._auxPartition = partition
 
     return graph
@@ -79,8 +86,17 @@ def addInitialCnstr(model):
     for steiner in graph._sSet:
         model.addConstr(vars.sum(steiner,'*') >= 1)
 
+def setSolution(model,edges1):
+    edges0 = graph._sortedEdges.difference(edges1)
 
+    vars = [model._vars[i,j] for i,j in list(edges1)]
+    vars += [model._vars[i,j] for i,j in list(edges0)]
 
+    vals = [1 for i in range(len(edges1))]
+    vals += [0 for i in range(len(edges0))]
+
+    model.cbSetSolution(vars,vals)
+    
 def callbackLabel(model,where):
     if where == GRB.Callback.MIPSOL:
         vals = model.cbGetSolution(model._vars)
@@ -103,11 +119,11 @@ def callbackLabel(model,where):
 
                 userCut = gp.quicksum(model._vars[i,j] for i,j in boundary) >= len(partition)-1 
                 model.cbCut(userCut)
+
+            edges1 = getAproxSolution(graph)
+            setSolution(model,edges1)
             
-            else:
-                aproxSolution = getAproxSolution(graph)
-                print(aproxSolution)
-                model.cbSetSolution(aproxSolution,1)
+
 
 
 if __name__ == "__main__":
