@@ -8,43 +8,43 @@ import gurobipy as gp
 
 from util import *
 
+edgeCapacity = lambda edge,graph: graph.edges[edge]["capacity"] 
 
-def edgeSetValue(set,graph):
+def edgeSetValue(edgeSet,graph):
     
     sum = 0
-    for edge in set:
-        sum += graph.edges[edge]["capacity"] 
+    for edge in edgeSet:
+        sum += edgeCapacity(edge,graph)
 
     return sum
 
-def partitionV(graph,partition,valueFunc,*args):
-    sum = 0
-    for set in partition:
-        boundary = vSetBoundary(graph,set)
-        sum += valueFunc(boundary,*args)
-        #print(f(boundary,*args))
 
-    return sum/2
+def partitionBndry(graph,partition):
+    boundary = set()
+    for vSet in partition:
+        boundary = boundary.union(vSetBoundary(graph,vSet))
 
-def updatePartition(graph,partition,partitionBndryW):
-    pass
+    return boundary
+
+def updatePartition(graph,partition,boundary):
+    edge = getBest(boundary,edgeCapacity,graph)
+
 
 def userCutPartition(model):
     graph = model._graph
     embedSolution(graph,model.cbGetNodeRel(model._vars))
     partition = copy.deepcopy(model._graph._auxPartition)
 
-    print(partitionV(graph,partition,edgeSetValue,graph))
+    boundary = partitionBndry(graph,partition)
 
-    partitionBndryW = partitionV(graph,partition,edgeSetValue,graph)
-    partitionBndryLengh = partitionV(graph,partition,len)
 
-    while(partitionBndryW >= len(partition)-1 and partitionBndryLengh > 0):
+    while(edgeSetValue(boundary,graph) >= len(partition)-1 and len(boundary) > 0):
+        updatePartition(graph,partition,boundary)
+        
+        boundary = partitionBndry(graph,partition)
+        break
 
-        updatePartition(graph,partition,partitionBndryW)
 
-        partitionBndryW = partitionV(graph,partition,edgeSetValue,graph)
-        partitionBndryLengh = partitionV(graph,partition,len)
 
     return partition
 

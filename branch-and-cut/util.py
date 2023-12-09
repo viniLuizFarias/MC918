@@ -48,11 +48,24 @@ def vSetBoundary(graph,vSet):
 
 identity = lambda a: a 
 
-def summation(iterableObj,f = identity):
+def summation(iterableObj,f = identity,*args):
     sum = 0
     for element in iterableObj:
-        sum += f(element)
+        sum += f(element,*args)
     return sum
+
+def getBest(iterableObj,evaluatingF,*args):
+    bestV = -999999999
+    bestElmnt = None
+    for element in iterableObj:
+        value = evaluatingF(element,*args)
+        #print(value)
+
+        if bestV < value:
+            bestElmnt = element
+            bestV = value
+    #print("bst:",bestV)
+    return bestElmnt
 
 """        sum = 0
         for x in vals.values():
@@ -70,7 +83,23 @@ def summation(iterableObj,f = identity):
     print(nx.minimum_cut(test,1,5))
     drawGraph(test)
 
+def partitionV(graph,partition,valueFunc,*args):
+    sum = 0
+    for set in partition:
+        boundary = vSetBoundary(graph,set)
+        sum += valueFunc(boundary,*args)
+        #print(f(boundary,*args))
 
+    return sum/2
+
+def partitionBndry(graph,partition):
+    sum = 0
+    for set in partition:
+        boundary = vSetBoundary(graph,set)
+        sum += valueFunc(boundary,*args)
+        #print(f(boundary,*args))
+
+    return sum/2
 
 
 """
