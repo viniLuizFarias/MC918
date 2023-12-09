@@ -55,7 +55,7 @@ def createModel(graph):
     model._graph = graph
     model.Params.LazyConstraints = 1
     model.Params.TimeLimit = 600
-    model.Params.OutputFlag = 0
+    #model.Params.OutputFlag = 0
 
     return model
 
@@ -90,6 +90,8 @@ def callbackLabel(model,where):
         if cut != None:
             lazyR = gp.quicksum(model._vars[i,j] for i, j in cut) >= 1
             model.cbLazy(lazyR)
+        else:
+            print("A")
 
     elif where == GRB.Callback.MIPNODE:
         if model.cbGet(GRB.Callback.MIPNODE_STATUS) == GRB.OPTIMAL:
@@ -111,5 +113,4 @@ if __name__ == "__main__":
     addInitialCnstr(model)
     model.optimize(callbackLabel)
 
-    vals = model.getAttr('X', model._vars)
 

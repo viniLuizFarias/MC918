@@ -33,7 +33,7 @@ def embedSolution(graph,solution,makeInt = 0):
     for i,j in solution:
         val = solution[i,j]
         if makeInt:
-            round(val)
+            val = round(val)
         graph.edges[i,j]["capacity"] = val
 
 def vSetBoundary(graph,vSet):
@@ -101,5 +101,8 @@ def partitionBndry(graph,partition):
 
     return sum/2
 
+    vals = model.getAttr('X', model._vars)
+    cut = findSteinerViolation(model._graph,vals)
+    print(edgeSetValue(cut,graph))
 
 """

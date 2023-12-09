@@ -26,14 +26,39 @@ def partitionBndry(graph,partition):
 
     return boundary
 
+
 def updatePartition(graph,partition,boundary):
+
     edge = getBest(boundary,edgeCapacity,graph)
+
+    p1 = graph.nodes[edge[0]]["partition"]
+    p2 = graph.nodes[edge[1]]["partition"]
+    if (p1 > p2):
+        p1,p2 = p2,p1
+
+    if( p1 > 0):
+        newVSet = partition[p1].union(partition[2])
+        del partition[p1]
+        del partition[p2]
+
+        index = len(partition)
+        partition.append(newVSet)
+        for v in newVSet:
+            graph.nodes[v]["partition"] = index
+
+    else:
+        partition[p1].remove(edge[0])
+        partition[p2].add(edge[0])
+        graph.nodes[edge[0]]["partition"] = p2
 
 
 def userCutPartition(model):
     graph = model._graph
     embedSolution(graph,model.cbGetNodeRel(model._vars))
-    partition = copy.deepcopy(model._graph._auxPartition)
+    partition = copy.deepcopy(graph._auxPartition)
+    for i,vSet in enumerate(partition):
+        for v in vSet:
+            graph.nodes[v]["partition"] = i
 
     boundary = partitionBndry(graph,partition)
 
