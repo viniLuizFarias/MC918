@@ -2,11 +2,10 @@ import sys
 import math
 import random
 import copy
-import networkx as nx
 from itertools import combinations
 import gurobipy as gp
 
-from util import *
+from util.util import *
 
 edgeCapacity = lambda edge,graph: graph.edges[edge]["capacity"] 
 

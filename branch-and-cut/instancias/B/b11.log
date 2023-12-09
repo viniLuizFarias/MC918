@@ -1,0 +1,78 @@
+Set parameter Username
+Academic license - for non-commercial use only - expires 2024-10-29
+Set parameter LazyConstraints to value 1
+Set parameter TimeLimit to value 600
+Gurobi Optimizer version 10.0.0 build v10.0.0rc2 (linux64)
+
+CPU model: AMD FX(tm)-4300 Quad-Core Processor, instruction set [SSE2|AVX]
+Thread count: 2 physical cores, 4 logical processors, using up to 4 threads
+
+Optimize a model with 619 rows, 150 columns and 675 nonzeros
+Model fingerprint: 0x1d11bb92
+Variable types: 0 continuous, 150 integer (150 binary)
+Coefficient statistics:
+  Matrix range     [1e+00, 1e+00]
+  Objective range  [1e+00, 1e+01]
+  Bounds range     [1e+00, 1e+00]
+  RHS range        [1e+00, 1e+00]
+Presolve removed 601 rows and 1 columns
+Presolve time: 0.00s
+Presolved: 18 rows, 149 columns, 74 nonzeros
+Variable types: 0 continuous, 149 integer (149 binary)
+
+Root relaxation: objective 5.100000e+01, 17 iterations, 0.00 seconds (0.00 work units)
+
+    Nodes    |    Current Node    |     Objective Bounds      |     Work
+ Expl Unexpl |  Obj  Depth IntInf | Incumbent    BestBd   Gap | It/Node Time
+
+     0     0   51.00000    0    -          -   51.00000      -     -    0s
+     0     0   51.00000    0    -          -   51.00000      -     -    0s
+     0     0   52.00000    0    -          -   52.00000      -     -    0s
+     0     0   53.00000    0    4          -   53.00000      -     -    0s
+     0     0   62.00000    0    -          -   62.00000      -     -    0s
+     0     0   63.00000    0    -          -   63.00000      -     -    0s
+     0     0   63.00000    0    -          -   63.00000      -     -    0s
+     0     0   63.00000    0    -          -   63.00000      -     -    0s
+H    0     0                     162.0000000   63.25000  61.0%     -    0s
+     0     0   63.25000    0    7  162.00000   63.25000  61.0%     -    0s
+     0     0   68.00000    0    -  162.00000   68.00000  58.0%     -    0s
+H    0     0                     123.0000000   68.66667  44.2%     -    0s
+     0     0   68.66667    0    5  123.00000   68.66667  44.2%     -    0s
+     0     0   72.00000    0    -  123.00000   72.00000  41.5%     -    1s
+     0     0   72.00000    0    -  123.00000   72.00000  41.5%     -    1s
+     0     0   72.00000    0    -  123.00000   72.00000  41.5%     -    1s
+     0     0   73.00000    0    -  123.00000   73.00000  40.7%     -    1s
+     0     0   73.00000    0    -  123.00000   73.00000  40.7%     -    1s
+     0     0   73.00000    0    -  123.00000   73.00000  40.7%     -    1s
+H    0     0                     119.0000000   73.00000  38.7%     -    1s
+     0     0   73.00000    0   11  119.00000   73.00000  38.7%     -    1s
+     0     0   75.00000    0    -  119.00000   75.00000  37.0%     -    1s
+H    0     0                      98.0000000   75.00000  23.5%     -    1s
+     0     0   75.00000    0    5   98.00000   75.00000  23.5%     -    1s
+     0     0   76.50000    0    5   98.00000   76.50000  21.9%     -    1s
+H    0     2                      93.0000000   77.50000  16.7%     -    2s
+     0     2   78.12500    0   12   93.00000   78.12500  16.0%     -    2s
+H   12    15                      92.0000000   80.75000  12.2%  21.8    2s
+H   25    29                      90.0000000   80.75000  10.3%  18.2    2s
+   194   180   83.63636   15   15   90.00000   81.60155  9.33%  10.3    5s
+   581   478   83.66667   10   10   90.00000   82.61538  8.21%   7.8   11s
+   834   593   85.00000   15   35   90.00000   84.10051  6.55%   7.2   15s
+H  895   634                      88.0000000   86.09181  2.17%   8.7   17s
+
+Cutting planes:
+  User: 70
+  Gomory: 3
+  MIR: 1
+  Flow cover: 20
+  Zero half: 3
+  Lazy constraints: 11
+
+Explored 927 nodes (8541 simplex iterations) in 17.76 seconds (0.83 work units)
+Thread count was 4 (of 4 available processors)
+
+Solution count 8: 88 90 92 ... 162
+
+Optimal solution found (tolerance 1.00e-04)
+Best objective 8.800000000000e+01, best bound 8.800000000000e+01, gap 0.0000%
+
+User-callback calls 2993, time in user-callback 16.37 sec

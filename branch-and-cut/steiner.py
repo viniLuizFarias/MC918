@@ -6,15 +6,11 @@ from itertools import combinations
 import gurobipy as gp
 from gurobipy import GRB
 
-from solutionVerification import *
-from relaxationCuts import *
-from primalHeuristics import *
+from callBackRoutines.solutionVerification import *
+from callBackRoutines.relaxationCuts import *
+from callBackRoutines.primalHeuristics import *
 
-from util import *
-
-
-import matplotlib.pyplot as plt
-
+from util.util import *
 
 
 

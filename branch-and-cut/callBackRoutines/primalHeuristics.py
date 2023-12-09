@@ -5,7 +5,7 @@ import networkx as nx
 from itertools import combinations
 import gurobipy as gp
 
-from util import *
+from util.util import *
 
 
 def getAproxSolution(embdGraph):
