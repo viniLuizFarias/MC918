@@ -8,6 +8,7 @@ from gurobipy import GRB
 
 from solutionVerification import *
 from relaxationCuts import *
+from primalHeuristics import *
 
 from util import *
 
@@ -84,19 +85,29 @@ def callbackLabel(model,where):
     if where == GRB.Callback.MIPSOL:
         vals = model.cbGetSolution(model._vars)
         cut = findSteinerViolation(model._graph,vals)
-        #printEdgeSet(graph,cut)
-
 
         if cut != None:
-            lazyR = gp.quicksum(model._vars[i,j] for i, j in cut) >= 1
+            lazyR = gp.quicksum(model._vars[i,j] for i,j in cut) >= 1
             model.cbLazy(lazyR)
-        else:
-            print("A")
+
 
     elif where == GRB.Callback.MIPNODE:
         if model.cbGet(GRB.Callback.MIPNODE_STATUS) == GRB.OPTIMAL:
-            partition = userCutPartition(model)
+            graph = model._graph
+            embedSolution(graph,model.cbGetNodeRel(model._vars))
 
+            partition = userCutPartition(graph)
+            boundary = partitionBndry(graph,partition)
+           
+            if edgeSetValue(boundary,graph) < len(partition)-1 :
+
+                userCut = gp.quicksum(model._vars[i,j] for i,j in boundary) >= len(partition)-1 
+                model.cbCut(userCut)
+            
+            else:
+                aproxSolution = getAproxSolution(graph)
+                print(aproxSolution)
+                model.cbSetSolution(aproxSolution,1)
 
 
 if __name__ == "__main__":

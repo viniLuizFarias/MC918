@@ -8,20 +8,6 @@ import gurobipy as gp
 from util import *
 
 
-def eliminateNSLeafs(ghTree):
-    nSLeafs = set()
-    for node in ghTree.nodes:
-        if node not in ghTree._sSet and len(ghTree.edges(node)) == 1:
-            nSLeafs.add(node)
-    
-    while len(nSLeafs) > 0:
-        leaf = nSLeafs.pop()
-        neighbor = list(ghTree.edges(leaf))[0][1]
-        ghTree.remove_node(leaf)
-        if neighbor not in ghTree._sSet and len(ghTree.edges(neighbor)) == 1:
-            nSLeafs.add(neighbor)
-    
-    #drawGraph(ghTree)
 
 def findViolationEdge(ghTree):
     for edge in ghTree.edges():

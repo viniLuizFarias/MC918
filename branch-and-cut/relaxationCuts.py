@@ -26,51 +26,81 @@ def partitionBndry(graph,partition):
 
     return boundary
 
+def swapVClass2(graph,partition,v,vSet):
+    partition[0].remove(v)
+    vSet.add(v)
+    graph.nodes[v]["partition"] = vSet
+
+
+
+def swapVClass3(graph,partition,v):
+    bestElement = None
+    bestV = -1
+    vNeighbors = set(graph.neighbors(v))
+
+    for vSet in partition[1:]:
+        currentNeighbors = vNeighbors.intersection(vSet)
+        edges = set([(v,u) for u in currentNeighbors])
+        value = edgeSetValue( edges , graph )
+
+        if bestV < value:
+            bestElement = vSet
+            bestV = value
+
+    if bestElement != None:
+        partition[0].remove(v)
+        bestElement.add(v)
+        graph.nodes[v]["partition"] = bestElement
+    else:
+        print("relaxationCuts.py swapVClass3 ERROR ")
+    
 
 def updatePartition(graph,partition,boundary):
 
     edge = getBest(boundary,edgeCapacity,graph)
+    v1,v2 = edge[0],edge[1]
+    p1,p2 = graph.nodes[v1]["partition"] , graph.nodes[v2]["partition"]
 
-    p1 = graph.nodes[edge[0]]["partition"]
-    p2 = graph.nodes[edge[1]]["partition"]
-    if (p1 > p2):
-        p1,p2 = p2,p1
-
-    if( p1 > 0):
-        newVSet = partition[p1].union(partition[2])
-        del partition[p1]
-        del partition[p2]
-
-        index = len(partition)
-        partition.append(newVSet)
-        for v in newVSet:
-            graph.nodes[v]["partition"] = index
-
+    if (p1 == partition[0]):
+        swapVClass2(graph,partition,v1,p2)
+    elif (p2 == partition[0]):
+        swapVClass2(graph,partition,v2,p1)
     else:
-        partition[p1].remove(edge[0])
-        partition[p2].add(edge[0])
-        graph.nodes[edge[0]]["partition"] = p2
+        newVSet = p1.union(p2)
+        partition.remove(p2)
+        partition.remove(p1)
+
+        partition.append(newVSet)
+        for vAux in newVSet:
+            graph.nodes[vAux]["partition"] = newVSet
 
 
-def userCutPartition(model):
-    graph = model._graph
-    embedSolution(graph,model.cbGetNodeRel(model._vars))
-    partition = copy.deepcopy(graph._auxPartition)
-    for i,vSet in enumerate(partition):
+
+def userCutPartition(embdGraph):
+
+    partition = copy.deepcopy(embdGraph._auxPartition)
+    for vSet in partition:
         for v in vSet:
-            graph.nodes[v]["partition"] = i
+            embdGraph.nodes[v]["partition"] = vSet
 
-    boundary = partitionBndry(graph,partition)
-
-
-    while(edgeSetValue(boundary,graph) >= len(partition)-1 and len(boundary) > 0):
-        updatePartition(graph,partition,boundary)
-        
-        boundary = partitionBndry(graph,partition)
-        break
+    boundary = partitionBndry(embdGraph,partition)
 
 
+    while(edgeSetValue(boundary,embdGraph) >= len(partition)-1 and len(boundary) > 0):
 
-    return partition
+        updatePartition(embdGraph,partition,boundary)
+        boundary = partitionBndry(embdGraph,partition)
+
+
+    #print(partition)
+
+
+    while(len(partition[0]) > 0):
+        v = next(iter(partition[0]))
+        swapVClass3(embdGraph,partition,v)
+
+    #print(partition)
+
+    return partition[1:]
 
 

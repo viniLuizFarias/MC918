@@ -41,8 +41,12 @@ def vSetBoundary(graph,vSet):
 
     for node in vSet:
         for edge in graph.edges(node):
-            if list(edge)[1] not in vSet:
-                boundary.add(edge)
+            if edge[1] not in vSet:
+                aux = edge
+                #print(edge)
+                if edge[1] < edge[0]:
+                    aux = (edge[1],edge[0])
+                boundary.add(aux)
 
     return boundary
 
@@ -66,6 +70,22 @@ def getBest(iterableObj,evaluatingF,*args):
             bestV = value
     #print("bst:",bestV)
     return bestElmnt
+
+
+def eliminateNSLeafs(graph):
+    nSLeafs = set()
+    for node in graph.nodes:
+        if node not in graph._sSet and len(graph.edges(node)) == 1:
+            nSLeafs.add(node)
+    
+    while len(nSLeafs) > 0:
+        leaf = nSLeafs.pop()
+        neighbor = list(graph.edges(leaf))[0][1]
+        graph.remove_node(leaf)
+        if neighbor not in graph._sSet and len(graph.edges(neighbor)) == 1:
+            nSLeafs.add(neighbor)
+    
+    #drawGraph(ghTree)
 
 """        sum = 0
         for x in vals.values():
