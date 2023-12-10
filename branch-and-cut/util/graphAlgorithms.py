@@ -18,7 +18,7 @@ def augPath(digraph, s, t, visited):
         edges = digraph.edges(cV)
         for edge in edges:
             capacity = digraph.edges[edge]["capacity"] - digraph.edges[edge]["flow"] 
-            capacity += digraph.edges[edge.reverse()]["flow"] 
+            
 
 
             nbr = edge[1]
@@ -43,7 +43,7 @@ def minWeightCut(digraph,s,t):
         while v != s:
             u = digraph.nodes[v]["parent"]
             cCapacity = digraph.edges[u,v]["capacity"] - digraph.edges[u,v]["flow"] 
-            cCapacity += digraph.edges[v,u]["flow"] 
+    
 
             if cCapacity< minFlow:
                 minFlow = cCapacity
@@ -55,9 +55,8 @@ def minWeightCut(digraph,s,t):
         while v != s:
             u = digraph.nodes[v]["parent"]
             digraph.edges[v,u]["capacity"] -= minflow
-            if (digraph.edges[v,u]["capacity"] < 0:
-                digraph.edges[u,v]["capacity"] -= digraph.edges[v,u]["capacity"]
-                digraph.edges[v,u]["capacity"] = 0
+            digraph.edges[u,v]["capacity"] += minflow
+                
 
             v = u
         reachableNodes = set()
