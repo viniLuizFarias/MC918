@@ -3,38 +3,71 @@ import math
 import random
 import networkx as nx
 
-def augPath(digraph, s, t, path):
-    visited = set([s])
-
-    queue = s
+def augPath(digraph, s, t, visited):
+    visited.add(s)
+    queue = [s]
 
     while(len(queue) > 0):
         cV = queue[0]
         del queue[0]
 
+        if cV == t:
+            return 1
+
+        
         edges = digraph.edges(cV)
         for edge in edges:
             capacity = digraph.edges[edge]["capacity"] - digraph.edges[edge]["flow"] 
-            capacity -= digraph.edges[edge.reverse()]["capacity"] - digraph.edges[edge.reverse()]["flow"] 
+            capacity += digraph.edges[edge.reverse()]["flow"] 
 
-            if capacity > 0 and edge[1] not in visited:
-                
 
+            nbr = edge[1]
+            if capacity > 0 and nbr not in visited:
+                digraph.nodes[nbr]["parent"] = cV
+                visited.add(nbr)
+                queue.append(nbr)
+
+
+return 0
 
 def minWeightCut(digraph,s,t):
-    max_flow = 0
+    reachableNodes = set()
     while True:
-        flow, path = augPath(digraph, s, t, set())
-        if not flow:
+        reachable = augPath(digraph, s, t, reachableNodes)
+        if not reachable:
             break
-        max_flow += flow
+        
         v = t
+        minFlow = 99999999
+
         while v != s:
-            u = path[v]
-            digraph.edges[u,v]["capacity"] -= flow
-            digraph.edges[v,u]["capacity"] += flow
+            cCapacity = digraph.edges[u,v]["capacity"] - digraph.edges[u,v]["flow"] 
+            cCapacity += digraph.edges[v,u]["flow"] 
+
+            if cCapacity< minFlow:
+                minFlow = cCapacity
+
             v = u
-    return max_flow
+
+        v = t
+        
+        while v != s:
+            u = digraph.nodes[v]["parent"]
+            digraph.edges[v,u]["capacity"] -= minflow
+            if (digraph.edges[v,u]["capacity"] < 0:
+                digraph.edges[u,v]["capacity"] -= digraph.edges[v,u]["capacity"]
+                digraph.edges[v,u]["capacity"] = 0
+
+            v = u
+        reachableNodes = set()
+
+    edges = set()
+    for node in reachableNodes:
+        for edge in digraph.edges(node):
+            if edge[1] not in reachableNodes:
+                edges.add(edge)
+        
+    return edges
 
 
 
