@@ -41,6 +41,7 @@ def minWeightCut(digraph,s,t):
         minFlow = 99999999
 
         while v != s:
+            u = digraph.nodes[v]["parent"]
             cCapacity = digraph.edges[u,v]["capacity"] - digraph.edges[u,v]["flow"] 
             cCapacity += digraph.edges[v,u]["flow"] 
 
