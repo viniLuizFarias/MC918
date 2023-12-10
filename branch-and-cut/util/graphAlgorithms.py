@@ -72,7 +72,52 @@ def minWeightCut(digraph,s,t):
 
 
 
+elementVal = lambda element: element[0]
+
+def kruskalTree(graph):
+    partition = [set([i]) for i in graph.nodes()]
+    for index,node in enumerate(graph.nodes()):
+        graph.nodes[node]["kPartition"] = partition[index]
+
+    edges = [[graph.edges[edge]["capacity"],edge] for edge in graph.edges]
+
+    edges.sort(reverse = 1,key = elementVal)
+    edges = [edge[1] for edge in edges]
+
+    kruskalTree = nx.Graph()
+    kruskalTree.add_nodes_from(graph.nodes(data =1))
+    
+    while len(partition > 1):
+        
+        edge = edges[0]
+        del edges[0]
+
+        vSet1 = graph.nodes[edge[0]]["partition"]
+        vSet2 = graph.nodes[edge[1]]["partition"]
+
+        
+        if vSet1 != vSet2:
+           
+            kruskalTree.add_edge(edge)
+            newVSet = vSet1.union(vSet2)
+          
+            for node in newVSet:
+                graph.nodes[node]["partition"] = newVSet
+            
+            
+            partition.remove(vSet1)
+            partition.remove(vSet2)
+            partition.append(newVSet)
+    
+    return kruskalTree
+        
+    
+     
 
 
-def maxTree(graph):
-    pass
+
+
+
+
+
+     
