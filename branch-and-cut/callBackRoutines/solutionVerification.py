@@ -6,6 +6,7 @@ from itertools import combinations
 import gurobipy as gp
 
 from util.util import *
+from util.graphAlgorithms import *
 
 
 
@@ -61,6 +62,10 @@ def findSteinerViolation(graph,solution):
         return None
 
     s,t = getMinCutST(ghTree,violationEdge)    
-    #print(s,t)
 
-    return minimumFlowCut(graph,s,t)
+    cut2 = minWeightCut(graph,s,t)
+
+    #print(cut2)
+    #print()
+    
+    return cut2

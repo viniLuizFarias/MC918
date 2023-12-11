@@ -6,12 +6,18 @@ from itertools import combinations
 import gurobipy as gp
 
 from util.util import *
-
+from util.graphAlgorithms import *
 
 def getAproxSolution(embdGraph):
-    maxTree = nx.maximum_spanning_tree(embdGraph,"capacity")
-    maxTree._sSet = embdGraph._sSet
-    eliminateNSLeafs(maxTree)
+    #maxTree = nx.maximum_spanning_tree(embdGraph,"capacity")
+    #maxTree._sSet = embdGraph._sSet
+    #eliminateNSLeafs(maxTree)
 
+    kTree = kruskalTree(embdGraph)
+    kTree._sSet = embdGraph._sSet
+    eliminateNSLeafs(kTree)
 
-    return maxTree.edges()
+    #print(kTree.edges())
+    #print(kTree)
+    #drawGraph(kTree)
+    return kTree.edges()

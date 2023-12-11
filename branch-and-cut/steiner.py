@@ -13,15 +13,7 @@ from callBackRoutines.primalHeuristics import *
 from util.util import *
 
 
-
-
-def stpToGraph(stpFile):
-    graph = nx.Graph()
-    iterFile(stpFile,"SECTION Graph\n")
-
-    n = int(stpFile.readline().split()[1])
-    m = int(stpFile.readline().split()[1])
-    graph.add_nodes_from(range(1,n+1))
+def getEdges(stpFile,m,graph):
     sortedEdges = set()
 
     for i in range(m):
@@ -33,8 +25,9 @@ def stpToGraph(stpFile):
         sortedEdges.add(tuple(edge))
 
     graph._sortedEdges = sortedEdges
-    nx.set_node_attributes(graph,0,"steiner")
 
+
+def getSteinerSet(stpFile,graph):
     iterFile(stpFile,"SECTION Terminals\n")
     s = int(stpFile.readline().split()[1])
     sSet = set() 
@@ -46,11 +39,27 @@ def stpToGraph(stpFile):
 
     graph._sSet = sSet
 
+def stpToGraph(stpFile):
+    graph = nx.Graph()
+    iterFile(stpFile,"SECTION Graph\n")
+
+    n = int(stpFile.readline().split()[1])
+    m = int(stpFile.readline().split()[1])
+    graph.add_nodes_from(range(1,n+1))
+
+    getEdges(stpFile,m,graph)
+
+    nx.set_node_attributes(graph,0,"steiner")
+
+
+    getSteinerSet(stpFile,graph)
+
     partition = [set(graph.nodes-graph._sSet)]
     partition += [set([node]) for node in graph._sSet]
 
     graph._auxPartition = partition
 
+    graph._auxDigraph = graph.to_directed()
     return graph
 
 
@@ -115,9 +124,9 @@ def callbackLabel(model,where):
 
                 userCut = gp.quicksum(model._vars[i,j] for i,j in boundary) >= len(partition)-1 
                 model.cbCut(userCut)
-
-            edges1 = getAproxSolution(graph)
-            setSolution(model,edges1)
+            else:
+                edges1 = getAproxSolution(graph)
+                setSolution(model,edges1)
             
 
 

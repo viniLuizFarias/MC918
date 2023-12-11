@@ -6,6 +6,8 @@ from itertools import combinations
 import gurobipy as gp
 from gurobipy import GRB
 
+import matplotlib.pyplot as plt
+
 
 
 def iterFile(file,stop):
