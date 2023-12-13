@@ -124,16 +124,34 @@ def callbackLabel(model,where):
 
                 userCut = gp.quicksum(model._vars[i,j] for i,j in boundary) >= len(partition)-1 
                 model.cbCut(userCut)
-            else:
-                edges1 = getAproxSolution(graph)
-                setSolution(model,edges1)
+            edges1 = getAproxSolution(graph)
+            setSolution(model,edges1)
             
 
+
+def writeSolution(model):
+    all_vars = model.getVars()
+    values = model.getAttr("X", all_vars)
+    names = model.getAttr("VarName", all_vars)
+
+    edges1 = []
+    qtd = 0
+    for name, val in zip(names, values):
+        if round(val) == 1:
+            edges1.append(name[2:-1].replace(',',' '))
+            qtd += 1
+
+
+    solFile = open("solution","w")
+    solFile.write(str(model.ObjVal) + "\n")
+    solFile.write(str(qtd) + "\n")
+    for edge in edges1:
+        solFile.write(edge + "\n")
 
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print('Usage: steiner.py stpFilePath')
+        print('Usage: steiner.py filePath.stp')
         sys.exit(1)
     filePath = sys.argv[1]
     file = open(filePath,"r")
@@ -145,4 +163,5 @@ if __name__ == "__main__":
     addInitialCnstr(model)
     model.optimize(callbackLabel)
 
+    writeSolution(model)
 
