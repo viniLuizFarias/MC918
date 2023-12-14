@@ -18,11 +18,6 @@ def findViolationEdge(ghTree):
     return None
 
 
-def minimumFlowCut(graph,s,t):
-    partitions = nx.minimum_cut(graph,s,t)[1]
-    cut = vSetBoundary(graph,partitions[0])
-    return cut
-
 
 
 
