@@ -2,6 +2,8 @@ import subprocess
 import os
 import time
 
+
+
 def runTest(folder,fileName):
     outputFolder = folder.replace("instancias","resultados")
     testPath = folder + "/" + fileName
@@ -19,7 +21,7 @@ def runTest(folder,fileName):
     time.sleep(0.5)
 
 if __name__ == "__main__":
-    subfolders = ["C"]
+    subfolders = ["B10"]
     for sFolder in subfolders:
         currentFolder = "instancias/" + sFolder
         files = os.listdir(currentFolder)
