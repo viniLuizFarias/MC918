@@ -11,6 +11,7 @@ from util.graphAlgorithms import *
 
 
 def findViolationEdge(ghTree):
+    
     for edge in ghTree.edges():
         if ghTree.edges[edge]["weight"] < 1:
             return edge
@@ -26,6 +27,7 @@ def minimumFlowCut(graph,s,t):
 
 
 def findSNode(tree,node):
+    # find a steiner node reachable from input node
     while(node not in tree._sSet):
         currentEdge = list(tree.edges(node))[0]
         node = currentEdge[1]
@@ -50,6 +52,7 @@ def getMinCutST(ghTree,violationEdge):
 
 
 def findSteinerViolation(graph,solution):
+    #finds cut that violates steiner conectivity (if present)
     embedSolution(graph,solution,1)
 
     ghTree = nx.gomory_hu_tree(graph)

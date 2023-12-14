@@ -31,6 +31,7 @@ def printEdgeSet(graph,set):
     print()
 
 def embedSolution(graph,solution,makeInt = 0):
+
     for i,j in solution:
         val = solution[i,j]
         if makeInt:
@@ -38,6 +39,8 @@ def embedSolution(graph,solution,makeInt = 0):
         graph.edges[i,j]["capacity"] = val
 
 def vSetBoundary(graph,vSet):
+    #gets the boundary of a vertex set
+
     boundary = set()
 
     for node in vSet:
@@ -74,6 +77,8 @@ def getBest(iterableObj,evaluatingF,*args):
 
 
 def eliminateNSLeafs(graph):
+    #takes non steiner leafs out of a graph iteratively
+
     nSLeafs = set()
     for node in graph.nodes:
         if node not in graph._sSet and len(graph.edges(node)) == 1:

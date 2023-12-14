@@ -10,7 +10,8 @@ from util.util import *
 edgeCapacity = lambda edge,graph: graph.edges[edge]["capacity"] 
 
 def edgeSetValue(edgeSet,graph):
-    
+    #returns value of a set of edges
+
     sum = 0
     for edge in edgeSet:
         sum += edgeCapacity(edge,graph)
@@ -19,6 +20,7 @@ def edgeSetValue(edgeSet,graph):
 
 
 def partitionBndry(graph,partition):
+    #gets boundary of a graph partition
     boundary = set()
     for vSet in partition:
         boundary = boundary.union(vSetBoundary(graph,vSet))
@@ -26,6 +28,8 @@ def partitionBndry(graph,partition):
     return boundary
 
 def swapVClass2(graph,partition,v,vSet):
+    #vertex class swap from step 2 of 'heursitica gulosa'
+
     partition[0].remove(v)
     vSet.add(v)
     graph.nodes[v]["partition"] = vSet
@@ -33,6 +37,8 @@ def swapVClass2(graph,partition,v,vSet):
 
 
 def swapVClass3(graph,partition,v):
+    #vertex class swap from step 3 of 'heursitica gulosa'
+
     bestElement = None
     bestV = -1
     vNeighbors = set(graph.neighbors(v))
@@ -55,6 +61,7 @@ def swapVClass3(graph,partition,v):
     
 
 def updatePartition(graph,partition,boundary):
+    #one iteration of the step 2 of 'heursitica gulosa'
 
     edge = getBest(boundary,edgeCapacity,graph)
     v1,v2 = edge[0],edge[1]
@@ -76,6 +83,7 @@ def updatePartition(graph,partition,boundary):
 
 
 def userCutPartition(embdGraph):
+    #get a steiner partition through 'heursitica gulosa' process
 
     partition = copy.deepcopy(embdGraph._auxPartition)
     for vSet in partition:

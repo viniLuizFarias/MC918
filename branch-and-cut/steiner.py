@@ -40,6 +40,8 @@ def getSteinerSet(stpFile,graph):
     graph._sSet = sSet
 
 def stpToGraph(stpFile):
+    #creates the graph according to the stpFile
+
     graph = nx.Graph()
     iterFile(stpFile,"SECTION Graph\n")
 
@@ -73,6 +75,8 @@ def createModel(graph):
     return model
 
 def graphToModel(model):
+    #creates model variables according to graph
+
     vars = gp.tupledict()
     graph = model._graph
     for i,j in graph.edges:
@@ -103,6 +107,8 @@ def setSolution(model,edges1):
     model.cbSetSolution(vars,vals)
     
 def callbackLabel(model,where):
+    #callback routines
+
     if where == GRB.Callback.MIPSOL:
         vals = model.cbGetSolution(model._vars)
         cut = findSteinerViolation(model._graph,vals)
@@ -117,19 +123,25 @@ def callbackLabel(model,where):
             graph = model._graph
             embedSolution(graph,model.cbGetNodeRel(model._vars))
 
+            #get steiner partition
+
             partition = userCutPartition(graph)
             boundary = partitionBndry(graph,partition)
            
+            #add constraint if violating partition equation
             if edgeSetValue(boundary,graph) < len(partition)-1 :
 
                 userCut = gp.quicksum(model._vars[i,j] for i,j in boundary) >= len(partition)-1 
                 model.cbCut(userCut)
+
+            #primal heuristics
             edges1 = getAproxSolution(graph)
             setSolution(model,edges1)
             
 
 
 def writeSolution(model):
+    # writes the best found solution into a text file
     all_vars = model.getVars()
     values = model.getAttr("X", all_vars)
     names = model.getAttr("VarName", all_vars)
@@ -151,7 +163,7 @@ def writeSolution(model):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print('Usage: steiner.py filePath.stp')
+        print('Usage: python3 steiner.py filePath.stp')
         sys.exit(1)
     filePath = sys.argv[1]
     file = open(filePath,"r")

@@ -9,9 +9,7 @@ from util.util import *
 from util.graphAlgorithms import *
 
 def getAproxSolution(embdGraph):
-    #maxTree = nx.maximum_spanning_tree(embdGraph,"capacity")
-    #maxTree._sSet = embdGraph._sSet
-    #eliminateNSLeafs(maxTree)
+    #get max spanning only with steiner leafs
 
     kTree = kruskalTree(embdGraph)
     kTree._sSet = embdGraph._sSet
