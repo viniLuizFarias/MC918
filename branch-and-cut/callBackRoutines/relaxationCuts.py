@@ -28,7 +28,7 @@ def partitionBndry(graph,partition):
     return boundary
 
 def swapVClass2(graph,partition,v,vSet):
-    #vertex class swap from step 2 of 'heursitica gulosa'
+    #vertex class swap from step 2 of 'heuristica gulosa'
 
     partition[0].remove(v)
     vSet.add(v)
@@ -37,7 +37,7 @@ def swapVClass2(graph,partition,v,vSet):
 
 
 def swapVClass3(graph,partition,v):
-    #vertex class swap from step 3 of 'heursitica gulosa'
+    #vertex class swap from step 3 of 'heuristica gulosa'
 
     bestElement = None
     bestV = -1
@@ -61,7 +61,7 @@ def swapVClass3(graph,partition,v):
     
 
 def updatePartition(graph,partition,boundary):
-    #one iteration of the step 2 of 'heursitica gulosa'
+    #one iteration of the step 2 of 'heuristica gulosa'
 
     edge = getBest(boundary,edgeCapacity,graph)
     v1,v2 = edge[0],edge[1]
@@ -83,7 +83,7 @@ def updatePartition(graph,partition,boundary):
 
 
 def userCutPartition(embdGraph):
-    #get a steiner partition through 'heursitica gulosa' process
+    #get a steiner partition through 'heuristica gulosa' process
 
     partition = copy.deepcopy(embdGraph._auxPartition)
     for vSet in partition:

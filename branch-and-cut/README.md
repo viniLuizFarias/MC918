@@ -13,5 +13,5 @@ Ela pode ser instalada através do comando:
 #### steiner.py
 Para resolver uma instancia de steiner com o algoritmo criado pode ser chamado o comando:
 
-<i>python3 steiner.py filePath.stp</i>
+<i>python3 main.py filePath.stp</i>
 

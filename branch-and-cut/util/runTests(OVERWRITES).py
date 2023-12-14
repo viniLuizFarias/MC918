@@ -11,7 +11,7 @@ def runTest(folder,fileName):
     logPath = outputFolder + "/" + fileName.replace(".stp",".log")
     print(outputFolder,testPath,logPath)
 
-    output = subprocess.check_output("python3 steiner.py "+testPath, shell=True)
+    output = subprocess.check_output("python3 main.py "+testPath, shell=True)
     file = open(logPath,"w")
     file.write(output.decode())
 

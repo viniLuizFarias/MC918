@@ -163,7 +163,7 @@ def writeSolution(model):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        print('Usage: python3 steiner.py filePath.stp')
+        print('Usage: python3 main.py filePath.stp')
         sys.exit(1)
     filePath = sys.argv[1]
     file = open(filePath,"r")
