@@ -66,7 +66,7 @@ if __name__ == "__main__":
 
 
     folders = ["instancias","resultados"]
-    subfolders = ["B","C"]
+    subfolders = ["B10"]
 
     for sFolder in subfolders:
         title_text = 'resultados testset ' + sFolder

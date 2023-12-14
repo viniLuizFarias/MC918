@@ -1,10 +1,10 @@
 # MC918 - Lab 02
 
 ## Relatório
-CAMINHO
+Presente no arquivo RelatórioLab02.pdf
 
 ## Execução
 #### networkX
 Foi utilizada a biblioteca networkX para calcular a árvore de gomory-hu e representar grafos.
 Ela pode ser instalada através do comando:  
-'pip install networkx'
+<i>pip install networkx</i>
