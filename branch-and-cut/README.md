@@ -10,7 +10,7 @@ Ela pode ser instalada através do comando:
 
 <i>pip install networkx</i>
 
-#### steiner.py
+#### steiner branch and cut
 Para resolver uma instancia de steiner com o algoritmo criado pode ser chamado o comando:
 
 <i>python3 main.py filePath.stp</i>
